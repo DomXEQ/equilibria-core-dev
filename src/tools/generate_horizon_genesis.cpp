@@ -65,9 +65,13 @@ int main() {
             throw std::runtime_error("Failed to construct miner tx");
         }
 
+        // Verify the actual output amounts in the transaction
+        uint64_t actual_output_amount = get_outs_money_amount(genesis_tx);
+        
         std::cout << "✅ Generated Genesis Transaction\n";
-        std::cout << "   Reward Amount: " << result.second << " atomic units\n";
-        std::cout << "   Reward Amount: " << (result.second / oxen::COIN) << " XEQ\n\n";
+        std::cout << "   Reward Amount (from construct_miner_tx): " << result.second << " atomic units\n";
+        std::cout << "   Actual Output Amount (from transaction): " << actual_output_amount << " atomic units\n";
+        std::cout << "   Actual Output Amount: " << (actual_output_amount / oxen::COIN) << " XEQ\n\n";
 
         // Serialize the transaction
         std::string tx_blob;
