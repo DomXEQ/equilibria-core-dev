@@ -48,6 +48,7 @@ int main() {
         genesis_tx.unlock_time = 0;
 
         // Construct miner tx - this will use the 200M premine from cryptonote_basic_impl.cpp
+        // Genesis blocks always use hf7 version, regardless of network's current hardfork
         std::pair<bool, uint64_t> result = construct_miner_tx(
             0,  // height
             0,  // median_weight
@@ -58,7 +59,7 @@ int main() {
             miner_tx_context,
             {},  // sn_rewards
             "",  // extra_nonce
-            hf::hf21_eth);  // Use latest hardfork version
+            hf::hf7);  // Genesis blocks always use hf7
 
         if (!result.first) {
             throw std::runtime_error("Failed to construct miner tx");
@@ -78,8 +79,8 @@ int main() {
 
         // Create genesis block to verify
         block genesis;
-        genesis.major_version = hf::hf21_eth;
-        genesis.minor_version = static_cast<uint8_t>(hf::hf21_eth);
+        genesis.major_version = hf::hf7;  // Genesis blocks always use hf7
+        genesis.minor_version = static_cast<uint8_t>(hf::hf7);
         genesis.timestamp = 0;
         genesis.prev_id = crypto::hash{};
         genesis.nonce = 12345;  // Must match GENESIS_NONCE in testnet.h
