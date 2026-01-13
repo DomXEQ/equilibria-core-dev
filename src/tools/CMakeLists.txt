@@ -32,13 +32,3 @@ target_link_libraries(generate_horizon_genesis
         cncrypto
         device
         extra) 
-
-add_executable(generate_horizon_genesis generate_horizon_genesis.cpp)
-target_link_libraries(generate_horizon_genesis
-    PRIVATE
-        cryptonote_core
-        cryptonote_basic
-        common
-        cncrypto
-        device
-        extra) 
