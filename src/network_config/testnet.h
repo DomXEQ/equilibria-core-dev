@@ -5,7 +5,7 @@
 namespace cryptonote::config::testnet {
 
 inline constexpr std::array seeds = {
-        "84.247.143.210:18080"sv,
+        "206.189.78.225:38156"sv,  // Horizon testnet seed node
 };
 
 inline constexpr network_config config{
