@@ -382,7 +382,8 @@ std::optional<double> parse_fee_percent(std::string_view fee) {
         return std::nullopt;
     }
 
-    if (percent < 0 || percent > 100)
+    // Equilibria Horizon: Maximum operator fee is 10%
+    if (percent < 0 || percent > 10)
         return std::nullopt;
 
     return percent;
@@ -393,13 +394,15 @@ uint16_t percent_to_basis_points(std::string percent_string) {
     if (!percent)
         throw oxen::traced<invalid_registration>{"could not parse fee percent"};
 
-    if (*percent < 0.0 || *percent > 100.0)
-        throw oxen::traced<invalid_registration>{"fee percent out of bounds"};
+    // Equilibria Horizon: Maximum operator fee is 10%
+    if (*percent < 0.0 || *percent > 10.0)
+        throw oxen::traced<invalid_registration>{"fee percent out of bounds (must be 0-10%)"};
 
     auto basis_points =
             static_cast<uint16_t>(std::lround(*percent / 100.0 * cryptonote::STAKING_FEE_BASIS));
-    if (*percent == 100.0)
-        basis_points = cryptonote::STAKING_FEE_BASIS;
+    // Cap at maximum operator fee (10%)
+    if (basis_points > cryptonote::MAX_OPERATOR_FEE_BASIS)
+        basis_points = cryptonote::MAX_OPERATOR_FEE_BASIS;
 
     return basis_points;
 }

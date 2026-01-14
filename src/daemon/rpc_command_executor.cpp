@@ -2617,7 +2617,7 @@ percentage.  This percentage is removed from the block reward and assigned to
 the operator, then the remaining reward is split among contributors (including
 the operator) proportionally to their contribution.
 
-Enter the operator fee as a percentage [0.00-100.00])");
+Enter the operator fee as a percentage [0.00-10.00])");
 
                     if (check_cancel_back(result))
                         break;
@@ -2628,7 +2628,7 @@ Enter the operator fee as a percentage [0.00-100.00])");
                         next_step(register_step::summary_info);
                     } catch (const std::exception& e) {
                         tools::fail_msg_writer().append(
-                                "Invalid value: {}. Fee must be between 0 and 100%",
+                                "Invalid value: {}. Fee must be between 0 and 10%",
                                 operator_fee_str);
                     }
                 }

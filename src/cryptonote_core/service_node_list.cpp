@@ -824,14 +824,15 @@ void validate_registration(
     } else {
         valid_stakes =
                 check_service_node_stakes(hf_version, staking_requirement, extracted_amounts);
-        valid_fee = reg.fee <= cryptonote::STAKING_FEE_BASIS;
+        // Equilibria Horizon: Maximum operator fee is 10%
+        valid_fee = reg.fee <= cryptonote::MAX_OPERATOR_FEE_BASIS;
     }
 
     if (!valid_fee)
         throw invalid_registration{"Operator fee is too high ({} > {})"_format(
                 reg.fee,
                 reg.uses_portions ? cryptonote::old::STAKING_PORTIONS
-                                  : cryptonote::STAKING_FEE_BASIS)};
+                                  : cryptonote::MAX_OPERATOR_FEE_BASIS)};
 
     if (!valid_stakes)
         throw invalid_registration{"Invalid {}: {{{}}}"_format(
@@ -7009,8 +7010,9 @@ registration_details convert_registration_args(
                 tr("Exceeds the maximum number of contributors") + " ("s +
                 std::to_string(max_contributors) + ")"};
 
+    // Equilibria Horizon: Maximum operator fee is 10% for HF19+ registrations
     const uint64_t max_fee = hf_version >= hf::hf19_reward_batching
-                                   ? cryptonote::STAKING_FEE_BASIS
+                                   ? cryptonote::MAX_OPERATOR_FEE_BASIS
                                    : cryptonote::old::STAKING_PORTIONS;
     if (!tools::parse_int(args[0], result.fee) || result.fee > max_fee)
         throw invalid_registration{
