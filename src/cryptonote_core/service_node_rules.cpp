@@ -393,8 +393,8 @@ uint16_t percent_to_basis_points(std::string percent_string) {
     if (!percent)
         throw oxen::traced<invalid_registration>{"could not parse fee percent"};
 
-    if (*percent < 0.0 || *percent > 100.0)
-        throw oxen::traced<invalid_registration>{"fee percent out of bounds"};
+    if (*percent < 0.0 || *percent > 10.0)
+        throw oxen::traced<invalid_registration>{"fee percent out of bounds (must be 0-10%)"};
 
     auto basis_points =
             static_cast<uint16_t>(std::lround(*percent / 100.0 * cryptonote::STAKING_FEE_BASIS));
